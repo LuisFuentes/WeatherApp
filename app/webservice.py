@@ -2,6 +2,8 @@
     The public expose web service for the weather app
 '''
 from app import app
+from location.location import LocationValidator
+
 ''' HTTP Public functions '''
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
@@ -13,14 +15,15 @@ def Index():
 	# for now, using index page as hello world page
     return "Hello World!"
 
-@app.route('/WeatherApp/<weatherformat>/<int:zipcode>', methods=['GET'])
-def GetWeatherAppByZip(weatherformat, zipcode):
+@app.route('/WeatherApp/<weatherformat>/<zipCode>', methods=['GET'])
+def GetWeatherAppByZip(weatherformat, zipCode):
+    '''
 	'''
-	'''
-	# Find existing web service that checks zip codes
-	# and Validate the zipcode is valid
-	
-	return '%s' % zipcode
+    location_validator = LocationValidator(zipCode)
+    resp = location_validator.is_valid_zip_code_location()
+    return '%s' % resp
+
+    #return '%s' % zipCode
 
 @app.route('/WeatherApp/<weatherformat>/<int:latitude>/<int:longitude>', methods=['GET'])
 def GetWeatherAppByLatLong(weatherformat, latitude, longitude):
@@ -30,6 +33,7 @@ def GetWeatherAppByLatLong(weatherformat, latitude, longitude):
 	# and Validate the lat-long is valid
 
 	return '%s, %s' % (latitude, longitude)
+
 @app.route('/WeatherApp/<weatherformat>/<city>/<state>', methods=['GET'])
 def GetWeatherAppByCityState(weatherformat, city, state):
 	'''
