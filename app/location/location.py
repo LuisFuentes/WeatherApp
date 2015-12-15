@@ -4,9 +4,8 @@ from xml.etree import ElementTree as ET
 
 class LocationValidator:
     '''
-        Validator class for locations  
+        Validator class for locations
     '''
-    
 
     def __init__(self, zipCode):
         self.zipCode = zipCode
@@ -18,8 +17,8 @@ class LocationValidator:
         self.zipCode = None
         self.city = city
         self.state = state
-        self.time_zone = None 
-    
+        self.time_zone = None
+
     def is_valid_zip_code_location(self):
         '''
             Checks if the location of the zip code is valid
@@ -33,25 +32,20 @@ class LocationValidator:
         # hard code it
 
         # Get the response and check if the Zip is valid
-        
-        
-
         xml_response = requests.get("http://www.webservicex.net/"
             "uszip.asmx/GetInfoByZIP?USZip=" + self.zipCode
             ).content
-        
 
         # Parse the xml response
-        tree = ElementTRee.fromstring(xml_response)[0]
-        
+        tree = ElementTree.fromstring(xml_response)[0]
+
         # Get each element
         self.city = tree.find('CITY')
         self.state = tree.find('STATE')
         self.time_zone = tree.find('TIME_ZONE')
-        
+
         return {"IsValidZip": True, "Message": "Sucesss - %s, %s" % (self.city, self.state)}
-        
-        
+
 def is_valid_zip_format(zipCode):
         '''
             Validates the zip code of a location

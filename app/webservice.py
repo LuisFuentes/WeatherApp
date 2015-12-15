@@ -2,6 +2,7 @@
     The public expose web service for the weather app
 '''
 from app import app
+from flask import render_template
 from location.location import LocationValidator
 
 ''' HTTP Public functions '''
@@ -13,7 +14,7 @@ def Index():
     '''
 	# TODO: Exposed welcome/index page...
 	# for now, using index page as hello world page
-    return "Hello World!"
+    return render_template('index.html')
 
 @app.route('/WeatherApp/<weatherformat>/<zipCode>', methods=['GET'])
 def GetWeatherAppByZip(weatherformat, zipCode):
@@ -36,9 +37,7 @@ def GetWeatherAppByLatLong(weatherformat, latitude, longitude):
 
 @app.route('/WeatherApp/<weatherformat>/<city>/<state>', methods=['GET'])
 def GetWeatherAppByCityState(weatherformat, city, state):
-	'''
-	'''
-	# Find existing web service that checks city, state
-	# are correct and valid
-	
-	return "%s, %s" % (city, state)
+    '''
+    '''
+    # Find existing web service that checks city, state are correct and valid
+    return '%s, %s' % (city, state)

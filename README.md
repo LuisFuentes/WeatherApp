@@ -7,6 +7,7 @@ Developing with the Weather App
 ------------------------
 First, install pip.
 ```bash
+sudo apt-get install virtualenv
 sudo apt-get install python-pip
 ```
 Next, install the virtual environment - virtualenv.
