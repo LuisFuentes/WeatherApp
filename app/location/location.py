@@ -18,8 +18,7 @@ class LocationValidator:
         self.zipCode = None
         self.city = city
         self.state = state
-        self.time_zone = None
-    
+        self.time_zone = None 
     
     def is_valid_zip_code_location(self):
         '''
@@ -32,10 +31,16 @@ class LocationValidator:
         # Now use a REST api to check if the zip is a valid location
         # TODO: Let's pass this in as a config item, but for now
         # hard code it
+
+        # Get the response and check if the Zip is valid
+        
+        
+
         xml_response = requests.get("http://www.webservicex.net/"
             "uszip.asmx/GetInfoByZIP?USZip=" + self.zipCode
             ).content
         
+
         # Parse the xml response
         tree = ElementTRee.fromstring(xml_response)[0]
         
