@@ -2,19 +2,14 @@ import re
 import requests
 from xml.etree import ElementTree as ET
 
+
 class LocationValidator:
     '''
         Validator class for locations
     '''
 
-    def __init__(self, zipCode):
+    def __init__(self, zipCode=None, city=None, state=None):
         self.zipCode = zipCode
-        self.city = None
-        self.state = None
-        self.time_zone = None
-
-    def __init__(self, city, state):
-        self.zipCode = None
         self.city = city
         self.state = state
         self.time_zone = None
@@ -33,18 +28,21 @@ class LocationValidator:
 
         # Get the response and check if the Zip is valid
         xml_response = requests.get("http://www.webservicex.net/"
-            "uszip.asmx/GetInfoByZIP?USZip=" + self.zipCode
-            ).content
+            "uszip.asmx/GetInfoByZIP?USZip=" + self.zipCode)
+        if xml_response is None:
+            return "ERROR" #TODO: Handle this better
+        xml_response = xml_response.content
 
         # Parse the xml response
-        tree = ElementTree.fromstring(xml_response)[0]
-
+        tree = ET.fromstring(xml_response)[0]
         # Get each element
-        self.city = tree.find('CITY')
-        self.state = tree.find('STATE')
-        self.time_zone = tree.find('TIME_ZONE')
+        self.city = tree.find('CITY').text
+        self.state = tree.find('STATE').text
+        self.time_zone = tree.find('TIME_ZONE').text
+        return {"IsValidZip": True,
+                "City": self.city,
+                "State": self.state}
 
-        return {"IsValidZip": True, "Message": "Sucesss - %s, %s" % (self.city, self.state)}
 
 def is_valid_zip_format(zipCode):
         '''

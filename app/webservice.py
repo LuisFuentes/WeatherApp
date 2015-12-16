@@ -3,6 +3,7 @@
 '''
 from app import app
 from flask import render_template
+import json
 from location.location import LocationValidator
 
 ''' HTTP Public functions '''
@@ -22,8 +23,7 @@ def GetWeatherAppByZip(weatherformat, zipCode):
 	'''
     location_validator = LocationValidator(zipCode)
     resp = location_validator.is_valid_zip_code_location()
-    return '%s' % resp
-
+    return json.dumps(resp)
     #return '%s' % zipCode
 
 @app.route('/WeatherApp/<weatherformat>/<int:latitude>/<int:longitude>', methods=['GET'])
@@ -40,4 +40,4 @@ def GetWeatherAppByCityState(weatherformat, city, state):
     '''
     '''
     # Find existing web service that checks city, state are correct and valid
-    return '%s, %s' % (city, state)
+    return '%s, %' % (city, state)
